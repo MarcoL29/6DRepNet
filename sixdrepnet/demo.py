@@ -84,11 +84,19 @@ if __name__ == '__main__':
     # Test the Model
     model.eval()  # Change model to 'eval' mode (BN uses moving mean/var).
 
-    cap = cv2.VideoCapture(cam)
+    cap = cv2.VideoCapture("/kaggle/input/situations/plateia_not_looking.mp4")
 
     # Check if the webcam is opened correctly
     if not cap.isOpened():
         raise IOError("Cannot open webcam")
+
+    # Get video properties
+    frame_width = int(cap.get(3))
+    frame_height = int(cap.get(4))
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+
+    # Output video writer
+    out = cv2.VideoWriter('/kaggle/working/plateia_not_looking.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
 
     with torch.no_grad():
         while True:
@@ -138,6 +146,10 @@ if __name__ == '__main__':
                 #utils.draw_axis(frame, y_pred_deg, p_pred_deg, r_pred_deg, left+int(.5*(right-left)), top, size=100)
                 utils.plot_pose_cube(frame,  y_pred_deg, p_pred_deg, r_pred_deg, x_min + int(.5*(
                     x_max-x_min)), y_min + int(.5*(y_max-y_min)), size=bbox_width)
-
-            cv2.imshow("Demo", frame)
-            cv2.waitKey(5)
+                
+            # Write frame to output video
+            out.write(frame)
+            
+        # Release resources
+        cap.release()
+        out.release()
