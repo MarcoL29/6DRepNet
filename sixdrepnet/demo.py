@@ -21,7 +21,6 @@ from face_detection import RetinaFace
 import matplotlib
 from matplotlib import pyplot as plt
 from PIL import Image
-matplotlib.use('TkAgg')
 
 from model import SixDRepNet
 import utils
