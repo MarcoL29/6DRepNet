@@ -97,6 +97,10 @@ if __name__ == '__main__':
     # Output video writer
     out = cv2.VideoWriter('/kaggle/working/plateia_not_looking.mp4', cv2.VideoWriter_fourcc(*'XVID'), fps, (frame_width, frame_height))
 
+    frame_counter = 0
+
+    start_time = time.time()
+
     with torch.no_grad():
         while True:
             ret, frame = cap.read()
@@ -148,6 +152,17 @@ if __name__ == '__main__':
                 
             # Write frame to output video
             out.write(frame)
+
+        # Count frames
+        frame_counter += 1
+        elapsed_time = time.time() - start_time
+    
+        # Print FPS every second
+        if elapsed_time > 1:
+            fps = frame_counter / elapsed_time
+            print(f"FPS: {fps:.2f}")
+            frame_counter = 0
+            start_time = time.time()
             
         # Release resources
         cap.release()
