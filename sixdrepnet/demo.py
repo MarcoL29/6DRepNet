@@ -153,16 +153,16 @@ if __name__ == '__main__':
             # Write frame to output video
             out.write(frame)
 
-        # Count frames
-        frame_counter += 1
-        elapsed_time = time.time() - start_time
-    
-        # Print FPS every second
-        if elapsed_time > 1:
-            fps = frame_counter / elapsed_time
-            print(f"FPS: {fps:.2f}")
-            frame_counter = 0
-            start_time = time.time()
+            # Count frames
+            frame_counter += 1
+            elapsed_time = time.time() - start_time
+        
+            # Print FPS every second
+            if elapsed_time > 1:
+                fps = frame_counter / elapsed_time
+                print(f"FPS: {fps:.2f}")
+                frame_counter = 0
+                start_time = time.time()
             
         # Release resources
         cap.release()
